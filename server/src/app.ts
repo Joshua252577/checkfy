@@ -7,8 +7,8 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-app.use('/auth', authRoute);
-app.use('/users', usersRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/users', usersRoute);
 
 app.use("/", express.static("front"));
 app.use("/", ((...args) => (req, res, next) => {

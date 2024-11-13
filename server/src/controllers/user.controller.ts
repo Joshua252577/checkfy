@@ -39,7 +39,9 @@ export class UserController {
     }
 
     public static async update(id: number, body: IUser) {
-        body.password = await this.hashPassword(body.password);
+        if (body.password) {
+            body.password = await this.hashPassword(body.password);
+        }
 
         try {
             const result = await pool.query(

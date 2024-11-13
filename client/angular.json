@@ -34,12 +34,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -72,7 +67,8 @@
               "buildTarget": "client:build:production"
             },
             "development": {
-              "buildTarget": "client:build:development"
+              "buildTarget": "client:build:development",
+              "proxyConfig": "proxy.config.json"
             }
           },
           "defaultConfiguration": "development"
@@ -105,6 +101,6 @@
     }
   },
   "cli": {
-    "analytics": "e8302633-76c6-49b4-b357-d7e8e559cb3c"
+    "analytics": "7dc43a2d-3f7d-4ee9-80cc-dd0cf8aa9713"
   }
 }

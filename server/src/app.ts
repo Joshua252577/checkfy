@@ -12,13 +12,13 @@ app.use('/users', usersRoute);
 
 app.use("/", express.static("front"));
 app.use("/", ((...args) => (req, res, next) => {
-    if ((req.method === "GET" || req.method === "HEAD") && req.accepts("html")) {
-        (res.sendFile || res.sendfile).call(res, ...args, err => err && next())
-    } else {
-        next()
-    }
+  if ((req.method === "GET" || req.method === "HEAD") && req.accepts("html")) {
+    (res.sendFile || res.sendfile).call(res, ...args, err => err && next())
+  } else {
+    next()
+  }
 })("index.html", {
-    root: "front"
+  root: "front"
 }));
 
 export default app;

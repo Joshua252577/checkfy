@@ -12,7 +12,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     try {
         req.user = jwt.verify(token, 'secret') as JwtPayload;
 
-        next();
+        return next();
     } catch (err) {
         return res.status(403).json({message: "token invalid or expired"});
     }

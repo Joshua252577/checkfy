@@ -1,14 +1,33 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs", // Ou use "ESNext" se estiver usando ESM no Node.js
-    "moduleResolution": "node",
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noLib": false,
     "outDir": "./dist",
-    "rootDir": "./src",
-    "esModuleInterop": true, // Permite usar 'import' para módulos CommonJS
+    "pretty": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "strictNullChecks": false,
+    "target": "ESNext",
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "./**/*"
+  ],
+  "exclude": [
+    "@types",
+    "dist",
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

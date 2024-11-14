@@ -1,0 +1,22 @@
+<mat-toolbar class="grid sm:grid-cols-3 bg-primary mat-elevation-z2">
+  <a [routerLink]="['admin/customerList']" class="flex">
+    <img alt="Logo do CheckFy" height="90" ngSrc="/logos/checkFy_name.png" priority
+         width="90">
+  </a>
+
+  <div class="sm:col-span-1 flex items-center justify-center gap-x-2">
+    <button [routerLink]="['/admin/customer']"  mat-button routerLinkActive="button-active">
+      Clientes
+    </button>
+    <button [routerLink]="['/admin/user']"  mat-button routerLinkActive="button-active">
+      Usuários
+    </button>
+  </div>
+
+  <div class="sm:col-span-1 flex items-center justify-end gap-x-1">
+    <span class="font-semibold text-sm"> {{ user.name }}</span>
+    <button (click)="logout()" mat-icon-button>
+      <mat-icon >exit_to_app</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

@@ -1,6 +1,7 @@
 import pool from "../services/database";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import {IUser} from '../models/user.model';
 
 export class AuthController {
     public static async authenticate(body: {email: string, password: string}) {
@@ -16,7 +17,7 @@ export class AuthController {
             throw new Error(`Usuário não encontrado.`);
         }
 
-        const user = result.rows[0];
+        const user: IUser = result.rows[0];
 
         const isMatch = await bcrypt.compare(body.password, user.password);
 
@@ -33,5 +34,13 @@ export class AuthController {
         );
 
         return {user, token};
+    }
+
+    public static async validateAccessToken(accessToken: string) {
+        try {
+          return jwt.verify(accessToken, 'secret');
+        } catch (err: any) {
+          throw new Error("Erro na autenticação: " + err.message);
+        }
     }
 }

@@ -1,0 +1,14 @@
+<div>
+  <div class="flex items-center mb-4 gap-x-2">
+    <h1>Usuários</h1>
+    <button mat-icon-button>
+      <mat-icon matSuffix>add</mat-icon>
+    </button>
+  </div>
+
+  <limber-table [columns]="columns"
+                [dataEmitter]="getDataEmitter">
+
+  </limber-table>
+
+</div>

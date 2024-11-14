@@ -1,14 +1,16 @@
 import express from 'express';
 import usersRoute from './routes/user.route';
 import authRoute from "./auth/auth.route";
+import customerRoute from './routes/customer.route';
 import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-app.use('/auth', authRoute);
-app.use('/users', usersRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/customers', customerRoute);
 
 app.use("/", express.static("front"));
 app.use("/", ((...args) => (req, res, next) => {

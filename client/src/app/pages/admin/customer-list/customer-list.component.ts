@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 import {CustomerService} from '../../../shared/services/customer.service';
 
 @Component({
-  selector: 'app-customer',
+  selector: 'app-customer-list',
   standalone: true,
   imports: [
     TableComponent,
@@ -17,10 +17,10 @@ import {CustomerService} from '../../../shared/services/customer.service';
     MatIcon,
     MatSuffix
   ],
-  templateUrl: './customer.component.html',
-  styleUrl: './customer.component.scss'
+  templateUrl: './customer-list.component.html',
+  styleUrl: './customer-list.component.scss'
 })
-export class CustomerComponent implements AfterViewInit {
+export class CustomerListComponent implements AfterViewInit {
   columns: IColumn[] = [
     {
       key: "id",

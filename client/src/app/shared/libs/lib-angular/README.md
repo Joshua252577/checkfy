@@ -37,17 +37,16 @@ Limber Select (\<limber-select\>) é um componente de caixa de seleção dinâmi
 > </app-select>
 > ```
 
-
 ### Table
 
 Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível, permitindo definir as colunas, paginação, ações e mais.
 
 > ##### Exemplos:
-> 
+>
 > **Com paginação server-side:**
-> 
+>
 > - html:
-> 
+>
 > ```html
 > <limber-table pagination="server-side"
 >               (getData)="onGetData($event)"
@@ -58,9 +57,9 @@ Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível
 >               [actions]="['edit']">
 > </limber-table>
 > ```
-> 
+>
 > - ts:
-> 
+>
 > ```ts
 > export class MainComponent {
 >     columns: IColumn[] = [
@@ -111,11 +110,11 @@ Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível
 >     }
 > }
 > ```
-> 
+>
 > **Com paginação client-side:**
-> 
+>
 > - html:
-> 
+>
 > ```html
 > <limber-table pagination="client-side"
 >               (getData)="onGetData()"
@@ -126,9 +125,9 @@ Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível
 >               [actions]="['edit']">
 > </limber-table>
 > ```
-> 
+>
 > - ts:
-> 
+>
 > ```ts
 > export class MainComponent {
 >     columns: IColumn[] = [
@@ -177,11 +176,11 @@ Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível
 >     }
 > }
 > ```
-> 
+>
 > **Sem paginação:**
-> 
+>
 > - html:
-> 
+>
 > ```html
 > <limber-table (getData)="onGetData()"
 >               (actionClick)="onActionClick($event)"
@@ -189,9 +188,9 @@ Limber Table (\<limber-table\>) é um componente de tabela dinâmica e flexível
 >               [actions]="['edit']">
 > </limber-table>
 > ```
-> 
+>
 > - ts:
-> 
+>
 > ```ts
 > export class MainComponent {
 >     columns: IColumn[] = [

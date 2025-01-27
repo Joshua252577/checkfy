@@ -20,7 +20,14 @@ export interface IEnum {
     default?: string;
 }
 
+export interface IConditionalLineColor {
+    field: string;
+    value: any;
+    color: string;
+}
+
 export type Paginator = "client-side" | "server-side" | "none";
 export type Action = "edit" | "visualize" | "delete";
 export type Align = "left" | "center" | "right"
 export type Type = "date" | "currency" | "document" | "phoneNumber";
+export type TableStatus = "LOADING" | "LOADED" | "ERROR";

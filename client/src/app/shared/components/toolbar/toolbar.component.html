@@ -1,11 +1,11 @@
-<mat-toolbar class="relative h-14 gap-x-2 mat-elevation-z2 bg-primary justify-center">
+<mat-toolbar class="relative h-14 gap-x-2 mat-elevation-z2 justify-center">
   <img ngSrc="/logos/checkFy_name.png" width="90" height="90" alt="Ícone" class="absolute left-4" priority>
 
-  <button [routerLink]="['admin/customerList']" class="button-hover" mat-button routerLinkActive="active">
+  <button [routerLink]="['/admin/customers']" class="button-hover" mat-button routerLinkActive="active">
     Clientes
   </button>
 
-  <button [routerLink]="['/admin/user-list']" class="button-hover" mat-button routerLinkActive="active">
+  <button [routerLink]="['/admin/users']" class="button-hover" mat-button routerLinkActive="active">
     Usuários
   </button>
 

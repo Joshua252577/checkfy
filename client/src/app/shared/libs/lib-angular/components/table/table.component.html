@@ -29,18 +29,18 @@
                                 class="float-right text-primary"
                                 [matTooltip]="action === 'edit' ? 'Editar' : action === 'delete' ? 'Deletar' : 'Visualizar'"
                                 matTooltipPosition="left">
-                            <mat-icon>{{action === "visualize" ? "visibility" : action}}</mat-icon>
+                            <mat-icon>{{ action === "visualize" ? "visibility" : action }}</mat-icon>
                         </button>
                     }
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClick(row)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngStyle]="{'background-color': getBackgroundColor(row)}" (click)="onRowClick(row)"></tr>
 
             @if (emptyMessage) {
                 <tr class="mat-row" *matNoDataRow>
-                    <td [attr.colspan]="columns.length" class="empty">{{emptyMessage}}</td>
+                    <td [attr.colspan]="columns.length" class="empty">{{ emptyMessage }}</td>
                 </tr>
             }
         </table>

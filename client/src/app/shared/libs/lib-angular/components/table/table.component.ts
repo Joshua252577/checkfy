@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from "@angular/core";
-import {MatCard} from "@angular/material/card";
 import {
     MatCell,
     MatCellDef,
@@ -16,9 +15,17 @@ import {
 } from "@angular/material/table";
 import {MatPaginator, MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
-import {Action, IColumn, IPaginator, Paginator, Type} from "../../interfaces/table.interface";
+import {
+    Action,
+    IColumn,
+    IConditionalLineColor,
+    IPaginator,
+    Paginator,
+    TableStatus,
+    Type
+} from "../../interfaces/table.interface";
 import {MatProgressBar} from "@angular/material/progress-bar";
-import {NgClass, NgComponentOutlet} from "@angular/common";
+import {NgClass, NgComponentOutlet, NgStyle} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
@@ -29,7 +36,6 @@ import {HttpResponse} from "@angular/common/http";
     selector: "limber-table",
     standalone: true,
     imports: [
-        MatCard,
         MatCell,
         MatCellDef,
         MatColumnDef,
@@ -48,8 +54,9 @@ import {HttpResponse} from "@angular/common/http";
         NgComponentOutlet,
         MatIconButton,
         MatIcon,
+        MatTooltip,
         NgClass,
-        MatTooltip
+        NgStyle
     ],
     templateUrl: "./table.component.html",
     styleUrl: "./table.component.scss"
@@ -74,6 +81,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         this.dataChange.emit(this._data);
 
     }
+
     get data() {
         return this._data;
     }
@@ -103,6 +111,9 @@ export class TableComponent implements OnInit, AfterViewInit {
 
     // Mensagem que aparecerá quando não há nenhum registro na tabela
     @Input() emptyMessage: string = "Nenhum registro encontrado.";
+
+    // Colore a linha conforme determinada condição
+    @Input() conditionalLineColor: IConditionalLineColor[] = [];
 
     //************************************************************************************************************//
     //************************************************** Outputs *************************************************//
@@ -177,11 +188,11 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        if (this.data.length && this.pagination === "server-side") {
+        if (this.data?.length && this.pagination === "server-side") {
             throw new Error("Pagination cannot be server-side when using setDataEmitter input.");
         }
 
-        if (this.data.length && this.dataEmitter) {
+        if (this.data?.length && this.dataEmitter) {
             throw new Error("It is not allowed to use data and dataEmitter inputs together.");
         }
 
@@ -335,7 +346,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         if (keys.length == 1) {
             value = element[key];
         } else if (keys.length > 1) {
-            let value: any = element;
+            value = element;
 
             for (let i = 0; i < keys.length; i++) {
                 value = value[keys[i]];
@@ -358,7 +369,7 @@ export class TableComponent implements OnInit, AfterViewInit {
                 case "document":
                     return this.formatDocument(value);
                 case "phoneNumber":
-                    return  this.formatPhoneNumber(value);
+                    return this.formatPhoneNumber(value);
             }
         } else {
             return value;
@@ -381,7 +392,7 @@ export class TableComponent implements OnInit, AfterViewInit {
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
 
-        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        return `${day}/${month}/${year} às ${hours}:${minutes}:${seconds}`;
     }
 
     formatDocument(value: any) {
@@ -403,9 +414,9 @@ export class TableComponent implements OnInit, AfterViewInit {
             return value;
         }
 
-        const countryCode = value.slice(0,2);
-        const areaCode = value.slice(2,4);
-        const firstPart = value.slice(4,9);
+        const countryCode = value.slice(0, 2);
+        const areaCode = value.slice(2, 4);
+        const firstPart = value.slice(4, 9);
         const secondPart = value.slice(9);
 
         return `+${countryCode} (${areaCode}) ${firstPart}-${secondPart}`;
@@ -421,6 +432,16 @@ export class TableComponent implements OnInit, AfterViewInit {
                 return ""
         }
     }
+
+    getBackgroundColor(element: any) {
+        for (let condition of this.conditionalLineColor) {
+            if (element[condition.field] === condition.value) {
+                return condition.color;
+            }
+        }
+
+        return '#FFFFFF'
+    }
 }
 
-type TableStatus = "LOADING" | "LOADED" | "ERROR";
+

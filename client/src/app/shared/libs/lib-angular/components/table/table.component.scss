@@ -60,6 +60,10 @@ mat-paginator {
     border-top: 1px solid #E0E0E0;
 }
 
+table {
+    background-color: #ffffff;
+}
+
 table tr {
     background-color: #FAFAFA;
 }
@@ -69,6 +73,5 @@ table th {
 }
 
 table .mat-mdc-cell {
-    background-color: #ffffff;
     border-bottom-color: #E0E0E0;
 }

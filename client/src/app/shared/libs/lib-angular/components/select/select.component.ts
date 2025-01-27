@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {combineLatestWith, map, Observable, of, shareReplay, startWith} from "rxjs";
+import {BehaviorSubject, combineLatestWith, map, Observable, of, shareReplay, startWith} from "rxjs";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AsyncPipe} from "@angular/common";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {HttpResponse} from "@angular/common/http";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 @Component({
     selector: 'limber-select',
@@ -26,8 +27,10 @@ import {HttpResponse} from "@angular/common/http";
     styleUrl: './select.component.scss'
 })
 export class SelectComponent implements OnInit {
-    // FormControl que receberá o valor do campo
-    @Input() control: FormControl;
+
+    //------------------------------------------------------------------------------------------------------------//
+    //-------------------------------------------------- INPUTS --------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------//
 
     // Model que receberá o valor do campo
     @Input()
@@ -37,14 +40,33 @@ export class SelectComponent implements OnInit {
             this.modelChange.emit(this._model);
         }
     }
+
     get model() {
         return this._model;
     }
 
-    @Output() modelChange: EventEmitter<any> = new EventEmitter();
+    // Opções que aparecerão no select (não pode ser utilizado com o input "observable")
+    @Input()
+    set options(value: any[]) {
+        this._options = value;
+        if (value) {
+            this.observable = of<any[]>(value);
+            this.setOptionsObservable(this.observable);
+        }
+    };
+
+    get options() {
+        return this._options;
+    }
+
+    // FormControl que receberá o valor do campo
+    @Input() control: FormControl;
 
     // Adiciona um campo de texto para buscar um valor dentre as opções
     @Input() withFilter: boolean = true;
+
+    // Permite selecionar múltiplas opções
+    @Input() multiple: boolean = false;
 
     // Campo que será filtrado
     @Input() optionsField: string;
@@ -55,8 +77,8 @@ export class SelectComponent implements OnInit {
     // Observable do método de busca dos dados (não pode ser utilizado com o input "options")
     @Input() observable: Observable<any>;
 
-    // Opções que aparecerão no select (não pode ser utilizado com o input "observable")
-    @Input() options: any[];
+    // BehaviorSubject que passará o Observable atualizado
+    @Input() behaviorSubject: BehaviorSubject<Observable<any>>;
 
     // Exibir opção nula
     @Input() showNullOption: boolean = false;
@@ -70,17 +92,49 @@ export class SelectComponent implements OnInit {
     // Texto descritivo que aparecerá na caixa de pesquisa
     @Input() searchPlaceholder: string = "";
 
+    //------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------------- OUTPUTS --------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------//
+
+    // Retorno do two-way binding do input "model"
+    @Output() modelChange: EventEmitter<any> = new EventEmitter();
+
+    // Retorna o objeto completo do valor selecionado
+    @Output() selectionChange: EventEmitter<any> = new EventEmitter();
+
+
+    //------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------------ PROPERTIES ------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------//
+
+    _fullValue: any;
     _model: any;
-    public filter: FormControl<string>;
+    _options: any[];
+
+    public filter: FormControl<string> = new FormControl("");
     public options$: Observable<any[]>;
     public filteredOptions$: Observable<any[]>;
 
-    ngOnInit() {
-        if (this.options) {
-            this.observable = of<any[]>(this.options);
-        }
+    //------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------------- METHODS --------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------//
 
-        this.options$ = this.observable.pipe(
+    ngOnInit() {
+        if (this.behaviorSubject) {
+            this.behaviorSubject.subscribe(async (observable) => {
+                if (!observable) {
+                    observable = of<any[]>([]);
+                }
+
+                this.setOptionsObservable(observable);
+            });
+        } else {
+            this.setOptionsObservable(this.observable);
+        }
+    }
+
+    setOptionsObservable(observable: Observable<any[]>) {
+        this.options$ = observable.pipe(
             map(response => {
                 if (response instanceof HttpResponse) {
                     return response.body;
@@ -91,7 +145,6 @@ export class SelectComponent implements OnInit {
         );
 
         if (this.withFilter) {
-            this.filter = new FormControl("");
             this.filteredOptions$ = this.filter.valueChanges.pipe(
                 startWith(""),
                 combineLatestWith(this.options$),
@@ -99,6 +152,28 @@ export class SelectComponent implements OnInit {
                     return options.filter(option => option[this.optionsField].toLowerCase().includes(filter));
                 })
             );
+        }
+    }
+
+    onSelectionChange(event: MatOptionSelectionChange, value: any) {
+        if (this.multiple) {
+            if (event.source.selected) {
+                this._fullValue.push(value);
+            } else {
+                let index = this._fullValue.findIndex((option: any) => option[this.valueField] === value[this.valueField]);
+                if (index >= 0) {
+                    this._fullValue.splice(index, 1);
+                }
+            }
+
+            this.selectionChange.emit(this._fullValue);
+        } else {
+            if (event.source.selected) {
+                if (value !== this._fullValue) {
+                    this._fullValue = value;
+                    this.selectionChange.emit(this._fullValue);
+                }
+            }
         }
     }
 }

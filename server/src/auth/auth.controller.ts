@@ -9,10 +9,17 @@ export class AuthController {
             throw new Error("Password is required");
         }
 
-        const result = await pool.query(
-            `SELECT id, name, email, password FROM users WHERE email = $1`,
-            [body.email]
-        );
+        const query = `SELECT
+                            U.id,
+                            U.name,
+                            U.email,
+                            U.password
+                       FROM users U
+                       WHERE U.email = $1`
+        ;
+
+        const result = await pool.query(query, [body.email]);
+
         if (result.rowCount === 0) {
             throw new Error(`Usuário não encontrado.`);
         }

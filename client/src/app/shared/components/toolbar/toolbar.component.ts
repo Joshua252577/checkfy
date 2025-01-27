@@ -13,11 +13,11 @@ import {AuthService} from '../../services/auth.service';
   imports: [
     MatToolbar,
     RouterLink,
-    NgOptimizedImage,
     RouterLinkActive,
     MatButton,
+    NgOptimizedImage,
+    MatIconButton,
     MatIcon,
-    MatIconButton
   ],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.scss'

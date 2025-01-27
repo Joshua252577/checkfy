@@ -1,22 +1,18 @@
-<mat-toolbar class="grid sm:grid-cols-3 bg-primary mat-elevation-z2">
-  <a [routerLink]="['admin/customerList']" class="flex">
-    <img alt="Logo do CheckFy" height="90" ngSrc="/logos/checkFy_name.png" priority
-         width="90">
-  </a>
+<mat-toolbar class="relative h-14 gap-x-2 mat-elevation-z2 bg-primary justify-center">
+  <img ngSrc="/logos/checkFy_name.png" width="90" height="90" alt="Ícone" class="absolute left-4" priority>
 
-  <div class="sm:col-span-1 flex items-center justify-center gap-x-2">
-    <button [routerLink]="['/admin/customer']"  mat-button routerLinkActive="button-active">
-      Clientes
-    </button>
-    <button [routerLink]="['/admin/user']"  mat-button routerLinkActive="button-active">
-      Usuários
-    </button>
-  </div>
+  <button [routerLink]="['admin/customerList']" class="button-hover" mat-button routerLinkActive="active">
+    Clientes
+  </button>
 
-  <div class="sm:col-span-1 flex items-center justify-end gap-x-1">
-    <span class="font-semibold text-sm"> {{ user.name }}</span>
-    <button (click)="logout()" mat-icon-button>
-      <mat-icon >exit_to_app</mat-icon>
+  <button [routerLink]="['/admin/user-list']" class="button-hover" mat-button routerLinkActive="active">
+    Usuários
+  </button>
+
+  <div class="absolute right-4">
+    <span class="font-semibold text-sm">{{user.name}}</span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
     </button>
   </div>
 </mat-toolbar>
